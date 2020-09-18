@@ -64,5 +64,37 @@ def test_more_than_two_sorted():
 
     arg = 'bananas apples dates cherries'
     out = getoutput(f'{prg} {arg} --sorted')
-    expected = ('You are bringing apples, bananas, cherries, and dates.')
+    expected = 'You are bringing apples, bananas, cherries, and dates.'
+    assert out.strip() == expected
+
+
+# --------------------------------------------------
+def test_two_no_oxford_comma():
+    """two items without a comma before the 'and'"""
+
+    arg = '"potato chips" coleslaw'
+    out = getoutput(f'{prg} {arg} --comma')
+    expected = 'You are bringing potato chips and coleslaw.'
+    assert out.strip() == expected
+
+
+# --------------------------------------------------
+def test_more_than_two_no_oxford_comma():
+    """more than two items without a comma before the 'and'"""
+
+    arg = '"potato chips" coleslaw cupcakes "French silk pie"'
+    out = getoutput(f'{prg} {arg} --comma')
+    expected = ('You are bringing potato chips, coleslaw, '
+                'cupcakes and French silk pie.')
+    assert out.strip() == expected
+
+
+# --------------------------------------------------
+def test_more_than_two_custom_separator():
+    """more than two items separated by the given separator"""
+
+    arg = '"potato chips" coleslaw cupcakes "French silk pie"'
+    out = getoutput(f"{prg} {arg} --sep ';'")
+    expected = ('You are bringing potato chips; coleslaw; '
+                'cupcakes; and French silk pie.')
     assert out.strip() == expected

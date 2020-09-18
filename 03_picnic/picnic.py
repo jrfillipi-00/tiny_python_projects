@@ -26,6 +26,17 @@ def get_args():
                         help='Sorts the listed items.',
                         action='store_true')
 
+    parser.add_argument('-c',
+                        '--comma',
+                        action='store_true',
+                        help='Removes Oxford comma')
+
+    parser.add_argument('-p',
+                        '--sep',
+                        help='Replaces commas with the given separator',
+                        type=str,
+                        default=',')
+
     return parser.parse_args()
 
 
@@ -36,13 +47,17 @@ def main():
     args = get_args()
     items = args.item
     num = len(items)
+    sep = f'{args.sep} '
 
     if args.sorted:
         items.sort()
 
     bringing = ''
     if num > 2:
-        bringing = f'{", ".join(items[:-1])}, and {items[-1]}'
+        if args.comma:
+            bringing = f'{sep.join(items[:-1])} and {items[-1]}'
+        else:
+            bringing = f'{sep.join(items[:-1])}{sep}and {items[-1]}'
     elif num == 2:
         bringing = ' and '.join(items)
     else:
